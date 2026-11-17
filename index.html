@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Toni Wealth" />
+  <meta name="theme-color" content="#F4F4F6" />
+  <title>Toni Wealth</title>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23141416'/%3E%3Ctext x='90' y='112' font-family='-apple-system,BlinkMacSystemFont,sans-serif' font-size='72' font-weight='800' fill='%23FFFFFF' text-anchor='middle'%3ETW%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg: #F4F4F6;
+      --card: #FFFFFF;
+      --hero: #141416;
+      --text: #111113;
+      --muted: #7C7C84;
+      --border: rgba(0, 0, 0, 0.055);
+      --green: #16A34A;
+      --green-bg: rgba(22, 163, 74, 0.12);
+      --blue: #007AFF;
+      --blue-bg: rgba(0, 122, 255, 0.10);
+      --orange: #F59E0B;
+      --orange-bg: rgba(245, 158, 11, 0.12);
+      --red: #EF4444;
+      --red-bg: rgba(239, 68, 68, 0.10);
+      --radius: 24px;
+      --spring: cubic-bezier(0.22, 1, 0.36, 1);
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg);
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.4;
+      padding: calc(env(safe-area-inset-top, 20px) + 12px) 16px calc(115px + env(safe-area-inset-bottom, 20px));
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Micro-interactions */
+    .tap-scale {
+      transition: transform 0.25s var(--spring), box-shadow 0.25s var(--spring), background-color 0.2s ease;
+    }
+    .tap-scale:active {
+      transform: scale(0.965);
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 4px 18px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--hero);
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.3px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .welcome-sub {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .welcome-name {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+    }
+
+    .scenario-pill {
+      display: flex;
+      background: #E6E6EB;
+      padding: 3px;
+      border-radius: 999px;
+      gap: 2px;
+    }
+
+    .scenario-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.3s var(--spring);
+    }
+
+    .scenario-btn.active {
+      background: #FFF;
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    /* Hero Card */
+    .hero-card {
+      background: linear-gradient(145deg, #222227 0%, #0D0D0F 100%);
+      color: #FFFFFF;
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .hero-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.62);
+      font-weight: 500;
+    }
+
+    .hero-amount {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-top: 2px;
+      transition: opacity 0.2s ease;
+    }
+
+    .hero-badge {
+      background: rgba(255,255,255,0.12);
+      color: #4ADE80;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-splits {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 16px;
+    }
+
+    .split-item span {
+      display: block;
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .split-item strong {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-hero {
+      flex: 1;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-hero-primary {
+      background: #FFFFFF;
+      color: #111113;
+    }
+
+    .btn-hero-secondary {
+      background: rgba(255,255,255,0.14);
+      color: #FFFFFF;
+    }
+
+    /* Section Title */
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin: 6px 4px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-sub {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    /* Bento Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.025);
+    }
+
+    .card-full {
+      margin-bottom: 12px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .card-kicker {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .card-arrow {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .card-big-num {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.6px;
+      margin-bottom: 4px;
+    }
+
+    .card-desc {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* Mini bars inside Bento */
+    .mini-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .mini-bar-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .mini-bar-track {
+      height: 5px;
+      background: #EFEFF2;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 3px;
+    }
+
+    .mini-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--hero);
+      transition: width 0.5s var(--spring);
+    }
+
+    /* Japan Goal Card */
+    .goal-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .goal-left {
+      flex: 1;
+    }
+
+    .goal-tag {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .goal-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 4px;
+    }
+
+    .goal-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .progress-track {
+      height: 7px;
+      background: #EFEFF2;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--hero);
+      border-radius: 999px;
+      transition: width 0.55s var(--spring);
+    }
+
+    .goal-btns {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn-pill-dark {
+      background: var(--hero);
+      color: #FFF;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-pill-light {
+      background: #EFEFF3;
+      color: var(--text);
+      border: none;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .goal-badge-visual {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #F4F4F6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .goal-pct {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .goal-pct-sub {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* Daily Tip Card */
+    .tip-card {
+      background: #FFFFFF;
+      border-radius: var(--radius);
+      padding: 15px 17px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .tip-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: var(--orange-bg);
+      color: var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .tip-title {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 2px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tip-body {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+      transition: opacity 0.25s ease;
+    }
+
+    .tip-next {
+      background: none;
+      border: none;
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* List Items */
+    .list-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 16px;
+    }
+
+    .list-item {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 13px 15px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .list-left {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .list-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: #F4F4F6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .list-title {
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    .list-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .list-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .list-amount {
+      font-size: 14px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .del-mini {
+      border: none;
+      background: #F2F2F6;
+      color: var(--muted);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inputs */
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    input, select {
+      font-family: var(--font);
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid #E2E2E8;
+      background: #FAFAFC;
+      color: var(--text);
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--hero);
+      background: #FFF;
+    }
+
+    /* Smooth View Transitions */
+    .view {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px) scale(0.99);
+    }
+
+    .view.active {
+      display: block;
+      animation: viewSpringIn 0.36s var(--spring) forwards;
+    }
+
+    @keyframes viewSpringIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Chatini UI */
+    .chat-box {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 14px;
+      height: 52vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 10px;
+      scroll-behavior: smooth;
+    }
+
+    .msg {
+      max-width: 85%;
+      padding: 11px 14px;
+      border-radius: 18px;
+      font-size: 13px;
+      line-height: 1.45;
+      animation: msgPop 0.28s var(--spring) forwards;
+    }
+
+    @keyframes msgPop {
+      from { opacity: 0; transform: translateY(6px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .msg-bot {
+      background: #F2F2F5;
+      color: var(--text);
+      align-self: flex-start;
+      border-bottom-left-radius: 6px;
+    }
+
+    .msg-user {
+      background: var(--hero);
+      color: #FFF;
+      align-self: flex-end;
+      border-bottom-right-radius: 6px;
+    }
+
+    .msg-action {
+      background: var(--green-bg);
+      color: var(--green);
+      border: 1px solid rgba(22, 163, 74, 0.22);
+      font-weight: 600;
+      font-size: 12px;
+      align-self: flex-start;
+      border-radius: 14px;
+      padding: 8px 12px;
+    }
+
+    .quick-chips {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scrollbar-width: none;
+    }
+
+    .quick-chips::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chip {
+      background: #FFF;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    /* Floating Bottom Pill Dock */
+    .dock-wrap {
+      position: fixed;
+      bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 448px;
+      z-index: 100;
+    }
+
+    .dock {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 999px;
+      padding: 5px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .dock-btn {
+      border: none;
+      background: transparent;
+      border-radius: 999px;
+      padding: 8px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s var(--spring);
+    }
+
+    .dock-btn.active {
+      background: var(--hero);
+      color: #FFFFFF;
+      transform: scale(1.02);
+    }
+
+    .dock-icon {
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.42);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-sheet {
+      background: #FFF;
+      width: 100%;
+      max-width: 480px;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      padding: 22px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+      animation: sheetUp 0.35s var(--spring) forwards;
+    }
+
+    @keyframes sheetUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="user-info">
+      <div class="avatar">TS</div>
+      <div>
+        <div class="welcome-sub">Bienvenido de nuevo</div>
+        <div class="welcome-name">Toni</div>
+      </div>
+    </div>
+    <div class="scenario-pill">
+      <button class="scenario-btn active" id="btnNovDic" onclick="setScenario('novdic')">Nov–Dic</button>
+      <button class="scenario-btn" id="btnEne" onclick="setScenario('ene')">Enero+</button>
+    </div>
+  </header>
+
+  <!-- VIEW 1: INICIO -->
+  <main id="view-home" class="view active">
+    <!-- Hero Card -->
+    <section class="hero-card">
+      <div class="hero-top">
+        <div>
+          <div class="hero-label">Patrimonio Neto Total</div>
+          <div class="hero-amount" id="heroNetWorth">240,00 €</div>
+        </div>
+        <div class="hero-badge" id="heroCapacityBadge">+1.856 €/mes libre</div>
+      </div>
+      <div class="hero-splits">
+        <div class="split-item">
+          <span>Liquidez</span>
+          <strong id="heroLiquid">120,00 €</strong>
+        </div>
+        <div class="split-item">
+          <span>Colchón TR</span>
+          <strong id="heroCushion">0,00 €</strong>
+        </div>
+        <div class="split-item">
+          <span>Inversión</span>
+          <strong id="heroInvest">120,00 €</strong>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn-hero btn-hero-primary tap-scale" onclick="paySalary()">+ Abonar nómina</button>
+        <button class="btn-hero btn-hero-secondary tap-scale" onclick="openTxModal()">Registrar gasto</button>
+      </div>
+    </section>
+
+    <!-- Daily Tip -->
+    <div class="tip-card">
+      <div class="tip-icon">💡</div>
+      <div style="flex:1;">
+        <div class="tip-title">
+          <span>Consejo del día</span>
+          <button class="tip-next" onclick="nextTip()">Siguiente ›</button>
+        </div>
+        <div class="tip-body" id="dailyTipText"></div>
+      </div>
+    </div>
+
+    <!-- Bento Grid -->
+    <div class="section-title">
+      <span>Resumen</span>
+      <span class="section-sub" id="scenarioLabel">Nómina 1.943 € (con incentivo)</span>
+    </div>
+
+    <div class="bento-grid">
+      <!-- Left Bento: Liquidez & Colchón -->
+      <div class="card tap-scale" onclick="switchView('accounts')" style="cursor:pointer;">
+        <div class="card-header">
+          <span class="card-kicker">Liquidez y TR</span>
+          <span class="card-arrow">›</span>
+        </div>
+        <div class="card-big-num" id="bentoCashTotal">120,00 €</div>
+        <div class="card-desc">TR al 2,25% TAE</div>
+        <div class="mini-bars" id="bentoCashBars"></div>
+      </div>
+
+      <!-- Right Bento: Inversiones -->
+      <div class="card tap-scale" onclick="switchView('sim')" style="cursor:pointer;">
+        <div class="card-header">
+          <span class="card-kicker">MyInvestor</span>
+          <span class="card-arrow">›</span>
+        </div>
+        <div class="card-big-num" id="bentoInvestTotal">120,00 €</div>
+        <div class="card-desc">DCA 200 €/mes Indie</div>
+        <svg id="miniChart" viewBox="0 0 120 46" style="width:100%; height:46px; overflow:visible;">
+          <path id="miniChartLine" d="M 0 40 Q 40 34, 75 20 T 120 4" fill="none" stroke="#141416" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="120" cy="4" r="3.5" fill="#16A34A"/>
+        </svg>
+        <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted); margin-top:4px;">
+          <span>S&P 500: <strong style="color:var(--text);" id="bentoSpVal">120€</strong></span>
+          <span>Indie: <strong style="color:var(--text);" id="bentoIndieVal">0€</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Japan Goal Card -->
+    <div class="card card-full goal-card">
+      <div class="goal-left">
+        <div class="goal-tag">Meta Marzo / Abril · 350 €/mes</div>
+        <div class="goal-title">Viaje a Japón 🇯🇵</div>
+        <div class="goal-meta" id="japanMetaText">0,00 € de 1.750,00 €</div>
+        <div class="progress-track">
+          <div class="progress-fill" id="japanProgressBar" style="width: 0%;"></div>
+        </div>
+        <div class="goal-btns">
+          <button class="btn-pill-dark tap-scale" onclick="adjustJapan(350)">+ 350 €</button>
+          <button class="btn-pill-light tap-scale" onclick="adjustJapan(-350)">− 350 €</button>
+          <button class="btn-pill-light tap-scale" onclick="resetJapan()">0 €</button>
+        </div>
+      </div>
+      <div class="goal-badge-visual">
+        <div class="goal-pct" id="japanPct">0%</div>
+        <div class="goal-pct-sub">completado</div>
+      </div>
+    </div>
+
+    <!-- Fixed Expenses & Recent Activity -->
+    <div class="section-title">
+      <span>Gastos Fijos y Actividad</span>
+      <span class="section-sub" id="fixedTotalLabel">86,99 €/mes</span>
+    </div>
+    <div class="list-stack" id="homeList"></div>
+  </main>
+
+  <!-- VIEW 2: CUENTAS Y METAS -->
+  <main id="view-accounts" class="view">
+    <div class="section-title">
+      <span>Cuentas y Saldos</span>
+      <button class="tip-next" onclick="exportCSV()">Exportar CSV</button>
+    </div>
+    <div class="list-stack" id="accountsEditorList"></div>
+
+    <div class="section-title">
+      <span>Configurar Viaje a Japón</span>
+    </div>
+    <div class="card card-full">
+      <div class="card-desc" style="margin-bottom:8px;">Edita o pon a 0 el ahorro acumulado y el objetivo para marzo/abril:</div>
+      <div class="input-row">
+        <input type="number" id="inputJapanSaved" placeholder="Ahorrado (€)" />
+        <input type="number" id="inputJapanTarget" placeholder="Objetivo (€)" />
+        <button class="btn-pill-dark tap-scale" onclick="saveJapanSettings()">Guardar</button>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <span>Gastos Fijos Mensuales</span>
+    </div>
+    <div class="list-stack" id="fixedEditorList"></div>
+    <div class="card card-full">
+      <div class="card-kicker">Añadir gasto fijo</div>
+      <div class="input-row">
+        <input type="text" id="newFixedName" placeholder="Ej: Gimnasio" />
+        <input type="number" id="newFixedAmount" placeholder="€/mes" style="max-width:95px;" />
+        <button class="btn-pill-dark tap-scale" onclick="addFixedExpense()">+</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- VIEW 3: SIMULADOR -->
+  <main id="view-sim" class="view">
+    <div class="section-title">
+      <span>Proyección MyInvestor</span>
+      <span class="section-sub">Interés compuesto</span>
+    </div>
+    <div class="card card-full">
+      <div class="card-kicker">Capital proyectado a <span id="simYearsLabel">10</span> años</div>
+      <div class="card-big-num" style="font-size:28px;" id="simFinalValue">36.850 €</div>
+      <div class="card-desc" id="simBreakdown">Aportado: 24.120 € · Rentabilidad: +12.730 €</div>
+
+      <svg id="simSvg" viewBox="0 0 320 130" style="width:100%; height:130px; margin:8px 0;">
+        <defs>
+          <linearGradient id="simGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#141416" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#141416" stop-opacity="0.0"/>
+          </linearGradient>
+        </defs>
+        <path id="simArea" d="" fill="url(#simGrad)"/>
+        <path id="simLine" d="" fill="none" stroke="#141416" stroke-width="2.5" stroke-linecap="round"/>
+        <path id="simBaseLine" d="" fill="none" stroke="#A1A1AA" stroke-width="1.5" stroke-dasharray="4 4"/>
+      </svg>
+
+      <div style="margin-top:10px;">
+        <div class="mini-bar-row">
+          <span>Aportación mensual Cartera Indie</span>
+          <strong id="simDcaVal">200 €/mes</strong>
+        </div>
+        <input type="range" id="simDcaRange" min="50" max="800" step="25" value="200" oninput="updateSim()" style="padding:0; margin-top:6px;">
+      </div>
+
+      <div style="margin-top:12px;">
+        <div class="mini-bar-row">
+          <span>Horizonte temporal</span>
+          <strong id="simYearsVal">10 años</strong>
+        </div>
+        <input type="range" id="simYearsRange" min="1" max="30" step="1" value="10" oninput="updateSim()" style="padding:0; margin-top:6px;">
+      </div>
+
+      <div style="margin-top:12px;">
+        <div class="mini-bar-row">
+          <span>Rentabilidad anual estimada</span>
+          <strong id="simRateVal">8% anual</strong>
+        </div>
+        <input type="range" id="simRateRange" min="4" max="12" step="0.5" value="8" oninput="updateSim()" style="padding:0; margin-top:6px;">
+      </div>
+    </div>
+
+    <div class="card card-full">
+      <div class="card-kicker">Colchón en Trade Republic (2,25% TAE)</div>
+      <div class="card-big-num" id="trInterestYear">0,00 € / año</div>
+      <div class="card-desc">Si acumulas un colchón de 3.000 € en Trade Republic, generarás <strong>67,50 € brutos al año</strong> totalmente líquidos para imprevistos.</div>
+    </div>
+  </main>
+
+  <!-- VIEW 4: CHATINI -->
+  <main id="view-chat" class="view">
+    <div class="section-title">
+      <span>Chatini · Asesor IA</span>
+      <span class="section-sub">Ejecuta cambios en vivo</span>
+    </div>
+
+    <div class="chat-box" id="chatMessages"></div>
+
+    <div class="quick-chips">
+      <button class="chip tap-scale" onclick="sendQuickChat('¿Cómo reparto mi nómina?')">Reparto nómina</button>
+      <button class="chip tap-scale" onclick="sendQuickChat('Quita 350€ de Japón')">−350€ Japón</button>
+      <button class="chip tap-scale" onclick="sendQuickChat('Pon Japón a 0€')">Reset Japón</button>
+      <button class="chip tap-scale" onclick="sendQuickChat('¿Cuánto puedo gastar este finde?')">Presupuesto finde</button>
+      <button class="chip tap-scale" onclick="sendQuickChat('¿Cómo voy con mi colchón?')">Estado colchón</button>
+    </div>
+
+    <div class="input-row" style="margin-top:4px;">
+      <input type="text" id="chatInput" placeholder="Pregúntame o dime 'Quita 350€ de Japón'..." onkeydown="if(event.key==='Enter') handleChatSend()" />
+      <button class="btn-pill-dark tap-scale" onclick="handleChatSend()">Enviar</button>
+    </div>
+  </main>
+
+  <!-- Floating Bottom Dock -->
+  <div class="dock-wrap">
+    <nav class="dock">
+      <button class="dock-btn active" id="nav-home" onclick="switchView('home')">
+        <span class="dock-icon">⌂</span>
+        <span>Inicio</span>
+      </button>
+      <button class="dock-btn" id="nav-accounts" onclick="switchView('accounts')">
+        <span class="dock-icon">◫</span>
+        <span>Cuentas</span>
+      </button>
+      <button class="dock-btn" id="nav-sim" onclick="switchView('sim')">
+        <span class="dock-icon">↗</span>
+        <span>Simulador</span>
+      </button>
+      <button class="dock-btn" id="nav-chat" onclick="switchView('chat')">
+        <span class="dock-icon">✦</span>
+        <span>Chatini</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Quick Transaction Modal -->
+  <div class="modal-backdrop" id="txModal" onclick="if(event.target===this) closeTxModal()">
+    <div class="modal-sheet">
+      <div class="modal-title">
+        <span>Nuevo movimiento</span>
+        <button onclick="closeTxModal()" style="border:none;background:none;font-size:20px;cursor:pointer;">✕</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <select id="txType">
+          <option value="expense">Gasto (-)</option>
+          <option value="income">Ingreso (+)</option>
+        </select>
+        <select id="txAccount">
+          <option value="bbva">BBVA</option>
+          <option value="caixabank">CaixaBank</option>
+          <option value="revolut">Revolut</option>
+          <option value="traderepublic">Trade Republic (Colchón)</option>
+        </select>
+        <input type="text" id="txConcept" placeholder="Concepto (ej: Cena, Gasolina, Extra...)" />
+        <input type="number" id="txAmount" placeholder="Importe (€)" step="0.01" />
+        <button class="btn-pill-dark tap-scale" style="padding:13px; font-size:14px; margin-top:4px;" onclick="submitTxModal()">Guardar movimiento</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'toni_wealth_v5';
+
+    const DAILY_TIPS = [
+      "Automatiza los 200 € de Cartera Indie el día 2 de cada mes: invertir antes de gastar evita que el ocio se coma tu patrimonio.",
+      "En España, los traspasos entre fondos indexados en MyInvestor no tributan hasta que reembolsas. Puedes rebalancear sin pagar impuestos.",
+      "Separa tu colchón en Trade Republic (2,25% TAE) de tu liquidez diaria: así no tocas el fondo de emergencia por impulso.",
+      "Con tus fijos en 86,99 €/mes (sin peajes), tienes un margen brutal: prioriza cerrar primero el colchón + Japón antes de subir el DCA.",
+      "El S&P 500 y la Cartera Indie tienen solapamiento en EE. UU.: deja tus 120 € del S&P 500 quietos creciendo y centra las nuevas aportaciones en Indie."
+    ];
+
+    const defaultState = {
+      scenario: 'novdic',
+      tipIndex: 0,
+      accounts: {
+        caixabank: { name: 'CaixaBank', balance: 100.00, type: 'liquid', icon: 'CB' },
+        revolut: { name: 'Revolut', balance: 20.00, type: 'liquid', icon: 'RV' },
+        bbva: { name: 'BBVA Nómina', balance: 0.00, type: 'liquid', icon: 'BB' },
+        traderepublic: { name: 'Trade Republic (2,25%)', balance: 0.00, type: 'cushion', icon: 'TR' },
+        sp500: { name: 'MyInvestor S&P 500', balance: 120.00, type: 'invest', icon: 'SP' },
+        indie: { name: 'MyInvestor Cartera Indie', balance: 0.00, type: 'invest', icon: 'IN' }
+      },
+      japan: {
+        saved: 0,
+        target: 1750,
+        monthly: 350
+      },
+      fixedExpenses: [
+        { id: 1, name: 'B:SM Flexipark 50', amount: 66.00, icon: '🅿️' },
+        { id: 2, name: 'Spotify', amount: 20.99, icon: '🎵' },
+        { id: 3, name: 'Recarga SEAT Mii', amount: 0.00, icon: '⚡' }
+      ],
+      transactions: []
+    };
+
+    // Migrate old v4 state cleanly if present, resetting accidental Japan test clicks if needed
+    let oldV4 = JSON.parse(localStorage.getItem('toni_wealth_v4'));
+    let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || (oldV4 ? { ...oldV4, japan: { ...oldV4.japan, saved: 0 }, transactions: [] } : JSON.parse(JSON.stringify(defaultState)));
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderAll();
+    }
+
+    function fmt(num) {
+      return Number(num).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+    }
+
+    function getSalary() {
+      return state.scenario === 'novdic' ? 1943 : 1693;
+    }
+
+    function getFixedTotal() {
+      return state.fixedExpenses.reduce((acc, item) => acc + Number(item.amount), 0);
+    }
+
+    function setScenario(sc) {
+      state.scenario = sc;
+      saveState();
+    }
+
+    function nextTip() {
+      const el = document.getElementById('dailyTipText');
+      el.style.opacity = '0';
+      setTimeout(() => {
+        state.tipIndex = (state.tipIndex + 1) % DAILY_TIPS.length;
+        saveState();
+        el.style.opacity = '1';
+      }, 160);
+    }
+
+    function switchView(viewName) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
+      const target = document.getElementById('view-' + viewName);
+      void target.offsetWidth; // trigger reflow for smooth spring animation
+      target.classList.add('active');
+      document.getElementById('nav-' + viewName).classList.add('active');
+      if (viewName === 'sim') updateSim();
+    }
+
+    function paySalary() {
+      const salary = getSalary();
+      state.accounts.bbva.balance += salary;
+      state.transactions.unshift({
+        id: Date.now(),
+        title: `Nómina Omnicom (${state.scenario === 'novdic' ? 'Nov–Dic' : 'Ene+'})`,
+        account: 'BBVA',
+        amount: salary,
+        type: 'income',
+        date: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })
+      });
+      saveState();
+    }
+
+    function adjustJapan(delta) {
+      if (delta > 0) {
+        state.japan.saved += delta;
+        if (state.accounts.bbva.balance >= delta) {
+          state.accounts.bbva.balance -= delta;
+        }
+        state.transactions.unshift({
+          id: Date.now(),
+          title: 'Aportación Viaje a Japón 🇯🇵',
+          account: 'Meta Japón',
+          amount: delta,
+          type: 'goal',
+          date: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })
+        });
+      } else {
+        const removed = Math.min(state.japan.saved, Math.abs(delta));
+        state.japan.saved = Math.max(0, state.japan.saved - removed);
+        if (removed > 0) {
+          state.transactions.unshift({
+            id: Date.now(),
+            title: 'Retirada Viaje a Japón 🇯🇵',
+            account: 'Meta Japón',
+            amount: removed,
+            type: 'income',
+            date: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })
+          });
+        }
+      }
+      saveState();
+    }
+
+    function resetJapan() {
+      state.japan.saved = 0;
+      state.transactions = state.transactions.filter(t => t.account !== 'Meta Japón');
+      saveState();
+    }
+
+    function deleteTransaction(id) {
+      state.transactions = state.transactions.filter(t => t.id !== id);
+      saveState();
+    }
+
+    function saveJapanSettings() {
+      const s = parseFloat(document.getElementById('inputJapanSaved').value);
+      const t = parseFloat(document.getElementById('inputJapanTarget').value);
+      if (!isNaN(s) && s >= 0) state.japan.saved = s;
+      if (!isNaN(t) && t > 0) state.japan.target = t;
+      saveState();
+    }
+
+    function updateAccountBalance(key, val) {
+      const num = parseFloat(val);
+      if (!isNaN(num)) {
+        state.accounts[key].balance = num;
+        saveState();
+      }
+    }
+
+    function addFixedExpense() {
+      const name = document.getElementById('newFixedName').value.trim();
+      const amount = parseFloat(document.getElementById('newFixedAmount').value);
+      if (!name || isNaN(amount)) return;
+      state.fixedExpenses.push({ id: Date.now(), name, amount, icon: '📌' });
+      document.getElementById('newFixedName').value = '';
+      document.getElementById('newFixedAmount').value = '';
+      saveState();
+    }
+
+    function removeFixedExpense(id) {
+      state.fixedExpenses = state.fixedExpenses.filter(f => f.id !== id);
+      saveState();
+    }
+
+    function openTxModal() {
+      document.getElementById('txModal').classList.add('open');
+    }
+
+    function closeTxModal() {
+      document.getElementById('txModal').classList.remove('open');
+    }
+
+    function submitTxModal() {
+      const type = document.getElementById('txType').value;
+      const accKey = document.getElementById('txAccount').value;
+      const concept = document.getElementById('txConcept').value.trim() || (type === 'expense' ? 'Gasto' : 'Ingreso');
+      const amount = parseFloat(document.getElementById('txAmount').value);
+      if (isNaN(amount) || amount <= 0) return;
+
+      if (type === 'expense') {
+        state.accounts[accKey].balance = Math.max(0, state.accounts[accKey].balance - amount);
+      } else {
+        state.accounts[accKey].balance += amount;
+      }
+
+      state.transactions.unshift({
+        id: Date.now(),
+        title: concept,
+        account: state.accounts[accKey].name,
+        amount,
+        type,
+        date: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })
+      });
+
+      document.getElementById('txConcept').value = '';
+      document.getElementById('txAmount').value = '';
+      closeTxModal();
+      saveState();
+    }
+
+    function updateSim() {
+      const dca = parseFloat(document.getElementById('simDcaRange').value);
+      const years = parseInt(document.getElementById('simYearsRange').value);
+      const rate = parseFloat(document.getElementById('simRateRange').value) / 100;
+      const initial = state.accounts.sp500.balance + state.accounts.indie.balance;
+
+      document.getElementById('simDcaVal').textContent = dca + ' €/mes';
+      document.getElementById('simYearsVal').textContent = years + (years === 1 ? ' año' : ' años');
+      document.getElementById('simYearsLabel').textContent = years;
+      document.getElementById('simRateVal').textContent = (rate * 100) + '% anual';
+
+      const monthlyRate = rate / 12;
+      const months = years * 12;
+      let total = initial;
+      let contributed = initial;
+      const points = [initial];
+      const basePoints = [initial];
+
+      for (let m = 1; m <= months; m++) {
+        total = (total + dca) * (1 + monthlyRate);
+        contributed += dca;
+        if (m % Math.max(1, Math.floor(months / 24)) === 0 || m === months) {
+          points.push(total);
+          basePoints.push(contributed);
+        }
+      }
+
+      const profit = total - contributed;
+      document.getElementById('simFinalValue').textContent = Math.round(total).toLocaleString('es-ES') + ' €';
+      document.getElementById('simBreakdown').textContent = `Aportado: ${Math.round(contributed).toLocaleString('es-ES')} € · Ganancia: +${Math.round(profit).toLocaleString('es-ES')} €`;
+
+      const maxVal = Math.max(...points, 100);
+      const w = 320, h = 120;
+      const toCoords = arr => arr.map((v, i) => {
+        const x = (i / (arr.length - 1)) * w;
+        const y = h - (v / maxVal) * (h - 12) + 4;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      });
+
+      const lineCoords = toCoords(points);
+      const baseCoords = toCoords(basePoints);
+      document.getElementById('simLine').setAttribute('d', 'M ' + lineCoords.join(' L '));
+      document.getElementById('simBaseLine').setAttribute('d', 'M ' + baseCoords.join(' L '));
+      document.getElementById('simArea').setAttribute('d', `M 0,${h} L ${lineCoords.join(' L ')} L ${w},${h} Z`);
+
+      const trBal = state.accounts.traderepublic.balance;
+      document.getElementById('trInterestYear').textContent = fmt(trBal * 0.0225) + ' / año';
+    }
+
+    function exportCSV() {
+      let csv = 'Cuenta,Tipo,Saldo\n';
+      Object.values(state.accounts).forEach(a => {
+        csv += `"${a.name}",${a.type},${a.balance.toFixed(2)}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'toni_wealth.csv';
+      link.click();
+    }
+
+    /* CHATINI INTELLIGENT ENGINE */
+    function appendChat(text, cls) {
+      const box = document.getElementById('chatMessages');
+      const div = document.createElement('div');
+      div.className = 'msg ' + cls;
+      div.innerHTML = text;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function sendQuickChat(text) {
+      document.getElementById('chatInput').value = text;
+      handleChatSend();
+    }
+
+    function parseAccountKey(txt) {
+      if (txt.includes('caixa')) return 'caixabank';
+      if (txt.includes('revolut')) return 'revolut';
+      if (txt.includes('bbva')) return 'bbva';
+      if (txt.includes('trade') || txt.includes('colchon') || txt.includes('colchón')) return 'traderepublic';
+      if (txt.includes('sp') || txt.includes('s&p')) return 'sp500';
+      if (txt.includes('indie') || txt.includes('myinvestor')) return 'indie';
+      return 'bbva';
+    }
+
+    function handleChatSend() {
+      const input = document.getElementById('chatInput');
+      const raw = input.value.trim();
+      if (!raw) return;
+      input.value = '';
+      appendChat(raw, 'msg-user');
+
+      const q = raw.toLowerCase();
+      const numMatch = q.match(/(\d+(?:[.,]\d+)?)/);
+      const amount = numMatch ? parseFloat(numMatch[1].replace(',', '.')) : null;
+
+      // 1. Escenarios
+      if (q.includes('enero')) {
+        setScenario('ene');
+        appendChat('✓ Escenario cambiado a Enero+ (1.693 €/mes).', 'msg-action');
+        return;
+      }
+      if (q.includes('noviembre') || q.includes('diciembre') || q.includes('nov')) {
+        setScenario('novdic');
+        appendChat('✓ Escenario cambiado a Nov–Dic (1.943 €/mes).', 'msg-action');
+        return;
+      }
+
+      // 2. Comandos Japón (Sumar, Restar, Resetear, Cambiar objetivo)
+      if (q.includes('japon') || q.includes('japón')) {
+        if (q.includes('reset') || q.includes('cero') || (amount === 0 && (q.includes('pon') || q.includes('deja')))) {
+          resetJapan();
+          appendChat('✓ Hucha de Japón reseteada a 0,00 €.', 'msg-action');
+          return;
+        }
+        if ((q.includes('quita') || q.includes('resta') || q.includes('saca') || q.includes('reduce') || q.includes('borra')) && amount !== null) {
+          adjustJapan(-amount);
+          appendChat(`✓ Restados ${fmt(amount)} de Japón. Saldo actual en hucha: ${fmt(state.japan.saved)}.`, 'msg-action');
+          return;
+        }
+        if ((q.includes('objetivo') || q.includes('presupuesto') || q.includes('cambia')) && amount !== null) {
+          state.japan.target = amount;
+          saveState();
+          appendChat(`✓ Objetivo del Viaje a Japón actualizado a ${fmt(amount)}.`, 'msg-action');
+          return;
+        }
+        if ((q.includes('aporta') || q.includes('añade') || q.includes('mete') || q.includes('suma')) && amount !== null) {
+          adjustJapan(amount);
+          appendChat(`✓ Añadidos ${fmt(amount)} a Japón (Total: ${fmt(state.japan.saved)} / ${fmt(state.japan.target)}).`, 'msg-action');
+          return;
+        }
+        if (q.includes('pon') && amount !== null) {
+          state.japan.saved = amount;
+          saveState();
+          appendChat(`✓ Saldo de Japón fijado en ${fmt(amount)}.`, 'msg-action');
+          return;
+        }
+      }
+
+      // 3. Borrar movimientos
+      if (q.includes('borra') && (q.includes('movimiento') || q.includes('ultimo') || q.includes('último'))) {
+        if (state.transactions.length > 0) {
+          const removed = state.transactions.shift();
+          saveState();
+          appendChat(`✓ Eliminado movimiento "${removed.title}" (${fmt(removed.amount)}).`, 'msg-action');
+        } else {
+          appendChat('No tienes movimientos recientes para borrar.', 'msg-bot');
+        }
+        return;
+      }
+
+      // 4. Gastos fijos
+      if (q.includes('fijo') && amount !== null) {
+        const cleanName = raw.replace(/añade|agrega|fijo|gasto|de|\d+(?:[.,]\d+)?|€/gi, '').trim() || 'Nuevo fijo';
+        state.fixedExpenses.push({ id: Date.now(), name: cleanName, amount, icon: '📌' });
+        saveState();
+        appendChat(`✓ Gasto fijo "${cleanName}" (${fmt(amount)}/mes) añadido.`, 'msg-action');
+        return;
+      }
+
+      // 5. Fijar saldo exacto
+      if ((q.includes('pon ') || q.includes('tengo ') || q.includes('actualiza ')) && amount !== null && !q.includes('aporta')) {
+        const key = parseAccountKey(q);
+        state.accounts[key].balance = amount;
+        saveState();
+        appendChat(`✓ Saldo de ${state.accounts[key].name} actualizado a ${fmt(amount)}.`, 'msg-action');
+        return;
+      }
+
+      // 6. Aportar a inversión
+      if ((q.includes('aporta') || q.includes('invierte')) && (q.includes('indie') || q.includes('sp') || q.includes('myinvestor')) && amount !== null) {
+        const key = q.includes('sp') ? 'sp500' : 'indie';
+        state.accounts[key].balance += amount;
+        saveState();
+        appendChat(`✓ Aportados ${fmt(amount)} a ${state.accounts[key].name}. Saldo: ${fmt(state.accounts[key].balance)}.`, 'msg-action');
+        return;
+      }
+
+      // 7. Apuntar gasto o ingreso rápido
+      if ((q.includes('apunta') || q.includes('apúnta') || q.includes('gasto') || q.includes('ingreso') || q.includes('cena') || q.includes('comida')) && amount !== null) {
+        const isIncome = q.includes('ingreso') || q.includes('cobro');
+        const key = parseAccountKey(q);
+        if (isIncome) {
+          state.accounts[key].balance += amount;
+        } else {
+          state.accounts[key].balance = Math.max(0, state.accounts[key].balance - amount);
+        }
+        state.transactions.unshift({
+          id: Date.now(),
+          title: isIncome ? 'Ingreso vía Chatini' : 'Gasto vía Chatini',
+          account: state.accounts[key].name,
+          amount,
+          type: isIncome ? 'income' : 'expense',
+          date: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })
+        });
+        saveState();
+        appendChat(`✓ ${isIncome ? 'Ingreso' : 'Gasto'} de ${fmt(amount)} registrado en ${state.accounts[key].name}.`, 'msg-action');
+        return;
+      }
+
+      // 8. Conversación financiera contextualizada (respuestas variadas y específicas)
+      const salary = getSalary();
+      const fixed = getFixedTotal();
+      const free = salary - fixed;
+      const liquid = state.accounts.caixabank.balance + state.accounts.revolut.balance + state.accounts.bbva.balance;
+      const cushion = state.accounts.traderepublic.balance;
+      const invest = state.accounts.sp500.balance + state.accounts.indie.balance;
+
+      if (q.includes('reparto') || q.includes('nomina') || q.includes('nómina') || q.includes('sueldo')) {
+        const trAlloc = Math.max(0, free - 200 - 350 - 300);
+        appendChat(`Con tu nómina de <strong>${fmt(salary)}</strong> y fijos de <strong>${fmt(fixed)}</strong>, te quedan <strong>${fmt(free)}</strong> limpios:<br><br>• <strong>200 €</strong> → Cartera Indie (MyInvestor)<br>• <strong>350 €</strong> → Hucha Japón<br>• <strong>300 €</strong> → Ocio/gasolina en Revolut<br>• <strong>${fmt(trAlloc)}</strong> → Colchón remunerado en Trade Republic.`, 'msg-bot');
+      } else if (q.includes('finde') || q.includes('gastar') || q.includes('ocio') || q.includes('libre')) {
+        const weekendBudget = Math.max(25, Math.round(liquid * 0.35));
+        appendChat(`Tienes <strong>${fmt(liquid)}</strong> en liquidez diaria (CaixaBank + Revolut + BBVA).<br><br>Para no tocar tus fijos de ${fmt(fixed)}, tu límite saludable para este finde son unos <strong>${weekendBudget} €</strong>. Si cobras pronto la nómina de ${fmt(salary)}, irás sobrado.`, 'msg-bot');
+      } else if (q.includes('colchon') || q.includes('colchón') || q.includes('trade')) {
+        const targetCushion = 3000;
+        const missing = Math.max(0, targetCushion - cushion);
+        appendChat(`En <strong>Trade Republic</strong> (2,25% TAE) tienes ahora mismo <strong>${fmt(cushion)}</strong>.<br><br>Tu objetivo recomendado de colchón son <strong>3.000 €</strong> (cubre ~3 meses de vida + imprevistos del Mii). Te faltan <strong>${fmt(missing)}</strong>: si metes ~900 €/mes en Nov–Dic y ~700 €/mes desde enero, lo cierras en menos de 4 meses.`, 'msg-bot');
+      } else if (q.includes('japon') || q.includes('japón')) {
+        const rem = Math.max(0, state.japan.target - state.japan.saved);
+        const months = Math.ceil(rem / 350);
+        appendChat(`Llevas <strong>${fmt(state.japan.saved)}</strong> de <strong>${fmt(state.japan.target)}</strong> para Japón. Te faltan <strong>${fmt(rem)}</strong> (${months} meses a 350 €/mes).<br><br>Si quieres corregirlo, dime <em>"Quita 350€ de Japón"</em> o <em>"Pon Japón a 0€"</em>.`, 'msg-bot');
+      } else if (q.includes('fijo') || q.includes('gastos')) {
+        const listStr = state.fixedExpenses.map(f => `• ${f.name}: <strong>${fmt(f.amount)}</strong>`).join('<br>');
+        appendChat(`Tus gastos fijos suman <strong>${fmt(fixed)}/mes</strong> (sin peajes):<br><br>${listStr}`, 'msg-bot');
+      } else if (q.includes('invertir') || q.includes('indie') || q.includes('sp500') || q.includes('myinvestor')) {
+        appendChat(`Tienes <strong>${fmt(state.accounts.sp500.balance)}</strong> en S&P 500 y <strong>${fmt(state.accounts.indie.balance)}</strong> en Cartera Indie (Total: <strong>${fmt(invest)}</strong>).<br><br>Mantén los 120 € del S&P 500 sin vender (para no tributar) y automatiza tus <strong>200 €/mes</strong> en Cartera Indie a partir de diciembre.`, 'msg-bot');
+      } else {
+        appendChat(`Te resumo tu foto actual: <strong>${fmt(liquid)}</strong> líquidos, <strong>${fmt(cushion)}</strong> en Trade Republic, <strong>${fmt(invest)}</strong> en MyInvestor y <strong>${fmt(state.japan.saved)}</strong> en Japón.<br><br>Pregúntame por tu <em>reparto de nómina</em>, <em>presupuesto del finde</em>, <em>estado del colchón</em> o dame órdenes como <em>"Quita 350€ de Japón"</em>.`, 'msg-bot');
+      }
+    }
+
+    function renderAll() {
+      document.getElementById('btnNovDic').classList.toggle('active', state.scenario === 'novdic');
+      document.getElementById('btnEne').classList.toggle('active', state.scenario === 'ene');
+      const salary = getSalary();
+      const fixed = getFixedTotal();
+      document.getElementById('scenarioLabel').textContent = state.scenario === 'novdic'
+        ? 'Nómina 1.943 € (con incentivo)'
+        : 'Nómina 1.693 € (Enero+)';
+
+      const liquid = state.accounts.caixabank.balance + state.accounts.revolut.balance + state.accounts.bbva.balance;
+      const cushion = state.accounts.traderepublic.balance;
+      const invest = state.accounts.sp500.balance + state.accounts.indie.balance;
+      const netWorth = liquid + cushion + invest + state.japan.saved;
+
+      document.getElementById('heroNetWorth').textContent = fmt(netWorth);
+      document.getElementById('heroLiquid').textContent = fmt(liquid);
+      document.getElementById('heroCushion').textContent = fmt(cushion);
+      document.getElementById('heroInvest').textContent = fmt(invest);
+      document.getElementById('heroCapacityBadge').textContent = `+${Math.round(salary - fixed).toLocaleString('es-ES')} €/mes libre`;
+
+      document.getElementById('dailyTipText').textContent = DAILY_TIPS[state.tipIndex];
+
+      document.getElementById('bentoCashTotal').textContent = fmt(liquid + cushion);
+      const cashItems = [
+        { label: 'CaixaBank', val: state.accounts.caixabank.balance },
+        { label: 'Revolut', val: state.accounts.revolut.balance },
+        { label: 'Trade Rep.', val: state.accounts.traderepublic.balance }
+      ];
+      const maxCash = Math.max(...cashItems.map(i => i.val), 100);
+      document.getElementById('bentoCashBars').innerHTML = cashItems.map(i => `
+        <div>
+          <div class="mini-bar-row"><span>${i.label}</span><span>${i.val.toFixed(0)}€</span></div>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${Math.min(100, (i.val / maxCash) * 100)}%"></div></div>
+        </div>
+      `).join('');
+
+      document.getElementById('bentoInvestTotal').textContent = fmt(invest);
+      document.getElementById('bentoSpVal').textContent = state.accounts.sp500.balance.toFixed(0) + '€';
+      document.getElementById('bentoIndieVal').textContent = state.accounts.indie.balance.toFixed(0) + '€';
+
+      const pct = Math.min(100, Math.round((state.japan.saved / state.japan.target) * 100));
+      document.getElementById('japanMetaText').textContent = `${fmt(state.japan.saved)} de ${fmt(state.japan.target)}`;
+      document.getElementById('japanProgressBar').style.width = pct + '%';
+      document.getElementById('japanPct').textContent = pct + '%';
+
+      document.getElementById('fixedTotalLabel').textContent = fmt(fixed) + '/mes';
+      const fixedHtml = state.fixedExpenses.map(f => `
+        <div class="list-item">
+          <div class="list-left">
+            <div class="list-icon">${f.icon}</div>
+            <div>
+              <div class="list-title">${f.name}</div>
+              <div class="list-sub">Gasto fijo mensual</div>
+            </div>
+          </div>
+          <div class="list-amount">-${fmt(f.amount)}</div>
+        </div>
+      `).join('');
+
+      const txHtml = state.transactions.slice(0, 6).map(t => `
+        <div class="list-item">
+          <div class="list-left">
+            <div class="list-icon">${t.type === 'income' ? '↓' : (t.type === 'goal' ? '🇯🇵' : '↑')}</div>
+            <div>
+              <div class="list-title">${t.title}</div>
+              <div class="list-sub">${t.account} · ${t.date}</div>
+            </div>
+          </div>
+          <div class="list-right">
+            <div class="list-amount" style="color:${t.type === 'income' ? 'var(--green)' : 'var(--text)'}">
+              ${t.type === 'income' ? '+' : '-'}${fmt(t.amount)}
+            </div>
+            <button class="del-mini" onclick="deleteTransaction(${t.id})" title="Borrar">✕</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('homeList').innerHTML = txHtml + fixedHtml;
+
+      document.getElementById('accountsEditorList').innerHTML = Object.entries(state.accounts).map(([key, acc]) => `
+        <div class="list-item" style="gap:10px;">
+          <div class="list-left" style="flex:1;">
+            <div class="list-icon" style="font-size:12px;">${acc.icon}</div>
+            <div>
+              <div class="list-title">${acc.name}</div>
+              <div class="list-sub">${acc.type === 'liquid' ? 'Liquidez diaria' : (acc.type === 'cushion' ? 'Colchón remunerado' : 'Inversión indexada')}</div>
+            </div>
+          </div>
+          <input type="number" step="0.01" value="${acc.balance}" onchange="updateAccountBalance('${key}', this.value)" style="max-width:110px; text-align:right; font-weight:700;" />
+        </div>
+      `).join('');
+
+      document.getElementById('inputJapanSaved').value = state.japan.saved;
+      document.getElementById('inputJapanTarget').value = state.japan.target;
+
+      document.getElementById('fixedEditorList').innerHTML = state.fixedExpenses.map(f => `
+        <div class="list-item">
+          <div class="list-left">
+            <div class="list-icon">${f.icon}</div>
+            <div>
+              <div class="list-title">${f.name}</div>
+              <div class="list-sub">${fmt(f.amount)} / mes</div>
+            </div>
+          </div>
+          <button onclick="removeFixedExpense(${f.id})" style="border:none;background:var(--red-bg);color:var(--red);padding:6px 10px;border-radius:10px;font-size:11px;font-weight:600;cursor:pointer;">Quitar</button>
+        </div>
+      `).join('');
+    }
+
+    renderAll();
+    appendChat('¡Hola Toni! Ya tienes control total sobre Japón (puedes sumar, restar 350 € o resetear a 0 €) y puedo responderte sobre tu reparto de nómina, presupuesto del finde o estado del colchón en Trade Republic.', 'msg-bot');
+  </script>
+</body>
+</html>
